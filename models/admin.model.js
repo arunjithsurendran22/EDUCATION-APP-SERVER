@@ -10,7 +10,7 @@ const adminSchema = mongoose.Schema({
   role: {
     type: String,
   },
-  Category: [
+  course: [
     {
       title: {
         type: String,
@@ -21,9 +21,24 @@ const adminSchema = mongoose.Schema({
       image: {
         type: String,
       },
+      subjects: [
+        {
+          title: {
+            type: String,
+          },
+          courseId: {
+            type: String,
+          },
+          courseName: {
+            type: String,
+          },
+          image: {
+            type: String,
+          },
+        },
+      ],
     },
   ],
-  
 });
 
 const adminModel = mongoose.model("Admin", adminSchema);

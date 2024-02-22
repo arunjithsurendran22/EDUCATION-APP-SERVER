@@ -15,3 +15,25 @@ export {
   userBlock,
   userDelete,
 };
+
+import {
+  addCourse,
+  getCourses,
+  updateCourse,
+  deleteCourse,
+  addSubjectToCourse,
+  getSubjectsForCourse,
+  updateSubjectForCourse,
+  deleteSubjectFromCourse,
+} from "./admin.course.controller.js";
+
+export {
+  addCourse,
+  getCourses,
+  updateCourse,
+  deleteCourse,
+  addSubjectToCourse,
+  getSubjectsForCourse,
+  updateSubjectForCourse,
+  deleteSubjectFromCourse,
+};
