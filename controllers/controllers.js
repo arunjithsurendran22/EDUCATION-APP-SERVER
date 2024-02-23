@@ -25,6 +25,7 @@ import {
   getSubjectsForCourse,
   updateSubjectForCourse,
   deleteSubjectFromCourse,
+  uploadVideoForSubject,
 } from "./admin.course.controller.js";
 
 export {
@@ -36,4 +37,5 @@ export {
   getSubjectsForCourse,
   updateSubjectForCourse,
   deleteSubjectFromCourse,
+  uploadVideoForSubject,
 };

@@ -18,7 +18,7 @@ router.get("/admin-profile", adminAuthorization, getAdminProfile);
 
 //admin block and unblock the user
 router.post("/user/block-unblock/:userId", adminAuthorization, userBlock);
-router.post("/delete-user/:userId", adminAuthorization, userDelete);
+router.delete("/delete-user/:userId", adminAuthorization, userDelete);
 //logout
 router.post("/logout", adminAuthorization, logoutAdmin);
 

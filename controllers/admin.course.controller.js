@@ -133,7 +133,7 @@ const deleteCourse = async (req, res, next) => {
 
     // Find the index of the course to be deleted
     const courseIndex = existingAdmin.course.findIndex(
-      (course) => course._id === courseId
+      (item) => item._id.toString() === courseId
     );
 
     if (courseIndex === -1) {
@@ -155,6 +155,7 @@ const deleteCourse = async (req, res, next) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 //POST :ADD sujects
 const addSubjectToCourse = async (req, res, next) => {
   try {
@@ -369,6 +370,67 @@ const deleteSubjectFromCourse = async (req, res, next) => {
   }
 };
 
+// Controller for uploading a video for a subject
+const uploadVideoForSubject = async (req, res, next) => {
+  try {
+    // Extract courseId and subjectId from request parameters
+    const { courseId, subjectId } = req.params;
+
+    console.log("courseId", courseId, "subjectId", subjectId);
+
+    // Find the admin by ID (assuming authentication is already done)
+    const adminId = req.adminId;
+    const existingAdmin = await adminModel.findById(adminId);
+
+    if (!existingAdmin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    // Find the course by ID
+    const course = existingAdmin.course.find(
+      (course) => course._id.toString() === courseId
+    );
+
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    // Find the subject by ID
+    const subject = course.subjects.find(
+      (sub) => sub._id.toString() === subjectId
+    );
+
+    if (!subject) {
+      return res.status(404).json({ message: "Subject not found" });
+    }
+
+    // Check if video file was uploaded
+    if (!req.file) {
+      return res.status(400).json({ message: "No video file uploaded" });
+    }
+
+    // Upload video to Cloudinary
+    const { secure_url } = await cloudinary.uploader.upload(req.file.path, {
+      resource_type: "video" // Specify resource_type as "video" for video uploads
+    });
+
+    // Add the video URL to the subject's videos array
+    subject.videos.push({ video: secure_url });
+
+    // Save the updated admin document
+    await existingAdmin.save();
+
+    res.status(201).json({
+      message: "Video uploaded for the subject successfully",
+      videoUrl: secure_url,
+    });
+  } catch (error) {
+    console.error("Error in uploadVideoForSubject:", error);
+    next(error);
+  }
+};
+
+
 export {
   addCourse,
   getCourses,
@@ -378,4 +440,5 @@ export {
   getSubjectsForCourse,
   updateSubjectForCourse,
   deleteSubjectFromCourse,
+  uploadVideoForSubject,
 };

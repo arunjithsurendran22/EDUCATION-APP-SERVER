@@ -1,10 +1,19 @@
 import multer from "multer";
 
-const uploader = multer({
+// Multer configuration for uploading images
+const imageUploader = multer({
   storage: multer.diskStorage({}),
-  limits: { fileSize: 5000000 },
+  limits: { fileSize: 5000000 }, // 5MB limit for images
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only images are allowed"));
+    }
+  },
 });
 
-const uploading = uploader.single("image");
+// Middleware for uploading a single image
+const imageUploading = imageUploader.single("image");
 
-export { uploading };
+export { imageUploading };

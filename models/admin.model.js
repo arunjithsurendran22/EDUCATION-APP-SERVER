@@ -35,6 +35,13 @@ const adminSchema = mongoose.Schema({
           image: {
             type: String,
           },
+          videos: [
+            {
+              video: {
+                type: String,
+              },
+            },
+          ],
         },
       ],
     },
